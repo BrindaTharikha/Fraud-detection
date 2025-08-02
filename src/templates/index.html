@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fraud Detection</title>
+</head>
+<body>
+  <h1>Fraud Detection Form</h1>
+  <form id="predictForm">
+    <label>Transaction Amount: <input type="number" step="0.01" name="Transaction_Amount" required></label><br>
+    <label>Account Balance: <input type="number" step="0.01" name="Account_Balance" required></label><br>
+    <label>Avg Transaction (7d): <input type="number" step="0.01" name="Avg_Transaction_Amount_7d" required></label><br>
+    <label>Transaction Distance: <input type="number" step="0.01" name="Transaction_Distance" required></label><br>
+    <label>Card Age: <input type="number" name="Card_Age" required></label><br>
+
+    <label>Transaction Type: <input type="text" name="Transaction_Type" required></label><br>
+    <label>Device Type: <input type="text" name="Device_Type" required></label><br>
+    <label>Location: <input type="text" name="Location" required></label><br>
+    <label>Merchant Category: <input type="text" name="Merchant_Category" required></label><br>
+    <label>Card Type: <input type="text" name="Card_Type" required></label><br>
+    <label>Authentication Method: <input type="text" name="Authentication_Method" required></label><br>
+
+    <button type="submit">Predict</button>
+  </form>
+
+  <h3 id="result"></h3>
+
+  <script>
+    document.getElementById("predictForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      data.Transaction_Amount = parseFloat(data.Transaction_Amount);
+      data.Account_Balance = parseFloat(data.Account_Balance);
+      data.Avg_Transaction_Amount_7d = parseFloat(data.Avg_Transaction_Amount_7d);
+      data.Transaction_Distance = parseFloat(data.Transaction_Distance);
+      data.Card_Age = parseInt(data.Card_Age);
+
+      const response = await fetch("/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+      document.getElementById("result").innerText =
+        `Prediction: ${result.prediction}, Fraud Probability: ${result.fraud_probability}`;
+    });
+  </script>
+</body>
+</html>
