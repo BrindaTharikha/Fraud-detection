@@ -125,7 +125,7 @@ AWS EC2:
 * Opened port 8000 in the security group for access
 * Cloned the repository and launched the container
 
-Deployed App URL: [http://your-ec2-ip:8000](http://your-ec2-ip:8000)
+Deployed App URL: (http://44.203.93.242:8000/)
 
 ### Conclusion
 
